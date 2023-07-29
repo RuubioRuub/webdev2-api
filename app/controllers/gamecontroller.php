@@ -3,38 +3,29 @@
 namespace Controllers;
 
 use Exception;
-use Services\CategoryService;
+use Services\GameService;
 
-class CategoryController extends Controller
+class GameController extends Controller
 {
     private $service;
 
-    // initialize services
     function __construct()
     {
-        $this->service = new CategoryService();
+        $this->service = new GameService();
     }
 
     public function getAll()
     {
         // Checks for a valid jwt, returns 401 if none is found
-        $token = $this->checkForJwt();
-        if (!$token)
-            return;
+        // $token = $this->checkForJwt();
+        // if (!$token)
+        //     return;
 
-        $offset = NULL;
-        $limit = NULL;
+        
 
-        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
-            $offset = $_GET["offset"];
-        }
-        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
-            $limit = $_GET["limit"];
-        }
+        $games = $this->service->getAll();
 
-        $categories = $this->service->getAll($offset, $limit);
-
-        $this->respond($categories);
+        $this->respond($games);
     }
 
     public function getOne($id)

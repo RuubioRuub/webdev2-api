@@ -6,12 +6,12 @@ use PDO;
 use PDOException;
 use Repositories\Repository;
 
-class CategoryRepository extends Repository
+class GameRepository extends Repository
 {
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT * FROM category";
+            $query = "SELECT * FROM game";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -22,7 +22,7 @@ class CategoryRepository extends Repository
             }
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Game');
             $articles = $stmt->fetchAll();
 
             return $articles;
