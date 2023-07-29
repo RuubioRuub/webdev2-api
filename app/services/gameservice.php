@@ -1,15 +1,15 @@
 <?php
 namespace Services;
 
-use Repositories\CategoryRepository;
+use Repositories\GameRepository;
 
-class CategoryService {
+class GameService {
 
     private $repository;
 
     function __construct()
     {
-        $this->repository = new CategoryRepository();
+        $this->repository = new GameRepository();
     }
 
     public function getAll($offset = NULL, $limit = NULL) {

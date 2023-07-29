@@ -21,11 +21,11 @@ $router->put('/products/(\d+)', 'ProductController@update');
 $router->delete('/products/(\d+)', 'ProductController@delete');
 
 // routes for the categories endpoint
-$router->get('/categories', 'CategoryController@getAll');
-$router->get('/categories/(\d+)', 'CategoryController@getOne');
-$router->post('/categories', 'CategoryController@create');
-$router->put('/categories/(\d+)', 'CategoryController@update');
-$router->delete('/categories/(\d+)', 'CategoryController@delete');
+$router->get('/games', 'GameController@getAll');
+$router->get('/games/(\d+)', 'GameController@getOne');
+$router->post('/games', 'GameController@create');
+$router->put('/games/(\d+)', 'GameController@update');
+$router->delete('/games/(\d+)', 'GameController@delete');
 
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
