@@ -20,9 +20,9 @@ $router->post('/products', 'ProductController@create');
 $router->put('/products/(\d+)', 'ProductController@update');
 $router->delete('/products/(\d+)', 'ProductController@delete');
 
-// routes for the categories endpoint
+// routes for the games endpoint
 $router->get('/games', 'GameController@getAll');
-$router->get('/games/(\d+)', 'GameController@getOne');
+$router->get('/games/(\d+)', 'GameController@getSelectedGame');
 $router->post('/games', 'GameController@create');
 $router->put('/games/(\d+)', 'GameController@update');
 $router->delete('/games/(\d+)', 'GameController@delete');

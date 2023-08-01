@@ -28,9 +28,9 @@ class GameController extends Controller
         $this->respond($games);
     }
 
-    public function getOne($id)
+    public function getSelectedGame($id)
     {
-        $category = $this->service->getOne($id);
+        $category = $this->service->getSelectedGame($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
         if (!$category) {

@@ -16,8 +16,8 @@ class GameService {
         return $this->repository->getAll($offset, $limit);
     }
 
-    public function getOne($id) {
-        return $this->repository->getOne($id);
+    public function getSelectedGame($id) {
+        return $this->repository->getSelectedGame($id);
     }
 
     public function insert($item) {       

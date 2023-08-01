@@ -31,17 +31,17 @@ class GameRepository extends Repository
         }
     }
 
-    function getOne($id)
+    function getSelectedGame($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM category WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT * FROM game WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
-            $product = $stmt->fetch();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Game');
+            $game = $stmt->fetch();
 
-            return $product;
+            return $game;
         } catch (PDOException $e) {
             echo $e;
         }
