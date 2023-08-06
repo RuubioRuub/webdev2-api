@@ -1,15 +1,15 @@
 <?php
 namespace Services;
 
-use Repositories\ProductRepository;
+use Repositories\ReviewRepository;
 
-class ProductService {
+class ReviewService {
 
     private $repository;
 
     function __construct()
     {
-        $this->repository = new ProductRepository();
+        $this->repository = new ReviewRepository();
     }
 
     public function getAll($offset = NULL, $limit = NULL) {

@@ -3,16 +3,16 @@
 namespace Controllers;
 
 use Exception;
-use Services\ProductService;
+use Services\ReviewService;
 
-class ProductController extends Controller
+class ReviewController extends Controller
 {
     private $service;
 
     // initialize services
     function __construct()
     {
-        $this->service = new ProductService();
+        $this->service = new ReviewService();
     }
 
     public function getAll()
@@ -48,14 +48,14 @@ class ProductController extends Controller
     public function create()
     {
         try {
-            $product = $this->createObjectFromPostedJson("Models\\Product");
-            $product = $this->service->insert($product);
+            $review = $this->createObjectFromPostedJson("Models\\Review");
+            $review = $this->service->insert($review);
 
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($product);
+        $this->respond($review);
     }
 
     public function update($id)

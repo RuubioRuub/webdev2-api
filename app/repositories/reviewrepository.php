@@ -2,13 +2,12 @@
 
 namespace Repositories;
 
-use Models\Category;
-use Models\Product;
+use Models\Review;
 use PDO;
 use PDOException;
 use Repositories\Repository;
 
-class ProductRepository extends Repository
+class ReviewRepository extends Repository
 {
     function getAll($offset = NULL, $limit = NULL)
     {
@@ -38,47 +37,45 @@ class ProductRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id WHERE product.id = :id";
+            $query = "SELECT * FROM review WHERE reviewID = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
-            $product = $this->rowToProduct($row);
+            $review = $this->rowToProduct($row);
 
-            return $product;
+            return $review;
         } catch (PDOException $e) {
             echo $e;
         }
     }
 
     function rowToProduct($row) {
-        $product = new Product();
-        $product->id = $row['id'];
-        $product->name = $row['name'];
-        $product->price = $row['price'];
-        $product->description = $row['description'];
-        $product->image = $row['image'];
-        $product->category_id = $row['category_id'];
-        $category = new Category();
-        $category->id = $row['category_id'];
-        $category->name = $row['category_name'];
+        $review = new Review();
+        $review->reviewID = $row['reviewID'];
+        $review->gameID = $row['gameID'];
+        $review->title = $row['title'];
+        $review->score = $row['score'];
+        $review->body = $row['body'];
+        $review->criticreview = $row['criticreview'];
+        $review->writer = $row['writer'];
+        $review->company = $row['company'];
 
-        $product->category = $category;
-        return $product;
+        return $review;
     }
 
-    function insert($product)
+    function insert($review)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into product (name, price, description, image, category_id) VALUES (?,?,?,?,?)");
+            $stmt = $this->connection->prepare("INSERT into review (criticreview, gameID, writer, company, body, score, title) VALUES (?,?,?,?,?,?,?)");
 
-            $stmt->execute([$product->name, $product->price, $product->description, $product->image, $product->category_id]);
+            $stmt->execute([$review->criticreview, $review->gameID, $review->writer, $review->company, $review->body, $review->score, $review->title]);
 
-            $product->id = $this->connection->lastInsertId();
+            $review->reviewID = $this->connection->lastInsertId();
 
-            return $this->getOne($product->id);
+            return $this->getOne($review->reviewID);
         } catch (PDOException $e) {
             echo $e;
         }
