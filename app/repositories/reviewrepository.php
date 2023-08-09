@@ -12,7 +12,7 @@ class ReviewRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT product.*, category.name as category_name FROM product INNER JOIN category ON product.category_id = category.id";
+            $query = "SELECT * FROM review ";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -23,15 +23,29 @@ class ReviewRepository extends Repository
             }
             $stmt->execute();
 
-            $products = array();
-            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {               
-                $products[] = $this->rowToProduct($row);
+            $reviews = array();
+            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+                $reviews[] = $this->rowToReview($row);
             }
 
-            return $products;
+            return $reviews;
         } catch (PDOException $e) {
             echo $e;
         }
+    }
+
+    function getReviewsForSelectedGame($gameid)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM review WHERE gameID = :id ORDER BY reviewID DESC ");
+        $stmt->bindParam(':id', $gameid);
+        $stmt->execute();
+
+        $reviews = array();
+        while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+            $reviews[] = $this->rowToReview($row);
+        }
+
+        return $reviews;
     }
 
     function getOne($id)
@@ -44,7 +58,7 @@ class ReviewRepository extends Repository
 
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $row = $stmt->fetch();
-            $review = $this->rowToProduct($row);
+            $review = $this->rowToReview($row);
 
             return $review;
         } catch (PDOException $e) {
@@ -52,7 +66,8 @@ class ReviewRepository extends Repository
         }
     }
 
-    function rowToProduct($row) {
+    function rowToReview($row)
+    {
         $review = new Review();
         $review->reviewID = $row['reviewID'];
         $review->gameID = $row['gameID'];

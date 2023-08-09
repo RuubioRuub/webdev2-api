@@ -15,7 +15,7 @@ $router->setNamespace('Controllers');
 
 // routes for the reviews endpoint
 $router->get('/reviews', 'ReviewController@getAll');
-$router->get('/reviews/(\d+)', 'ReviewController@getOne');
+$router->get('/reviews/(\d+)', 'ReviewController@getReviewsForSelectedGame');
 $router->post('/reviews', 'ReviewController@create');
 $router->put('/reviews/(\d+)', 'ReviewController@update');
 $router->delete('/reviews/(\d+)', 'ReviewController@delete');

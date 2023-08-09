@@ -16,6 +16,10 @@ class ReviewService {
         return $this->repository->getAll($offset, $limit);
     }
 
+    function getReviewsForSelectedGame($gameid) {
+        return $this->repository->getReviewsForSelectedGame($gameid);
+    }
+
     public function getOne($id) {
         return $this->repository->getOne($id);
     }
