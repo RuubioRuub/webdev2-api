@@ -34,7 +34,7 @@ class GameRepository extends Repository
     function getSelectedGame($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM game WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT * FROM game WHERE gameID = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
@@ -47,16 +47,21 @@ class GameRepository extends Repository
         }
     }
 
-    function insert($category)
+    function insert($game)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into category (name) VALUES (?)");
+            $stmt = $this->connection->prepare("INSERT into game (title, publisher, genre, description, image) VALUES (:title, :publisher, :genre, :description, :image)");
+            $stmt->bindParam(":title", $game->title);
+            $stmt->bindParam(":publisher", $game->publisher);
+            $stmt->bindParam(":genre", $game->genre);
+            $stmt->bindParam(":description", $game->description);
+            $stmt->bindParam(":image", $game->image);
 
-            $stmt->execute([$category->name]);
+            $stmt->execute();
 
-            $category->id = $this->connection->lastInsertId();
+            $game->id = $this->connection->lastInsertId();
 
-            return $category;
+            return $game;
         } catch (PDOException $e) {
             echo $e;
         }

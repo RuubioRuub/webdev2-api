@@ -113,7 +113,7 @@ class ReviewRepository extends Repository
     function delete($id)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM product WHERE id = :id");
+            $stmt = $this->connection->prepare("DELETE FROM review WHERE reviewID = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;
