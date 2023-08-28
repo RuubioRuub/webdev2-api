@@ -27,9 +27,15 @@ class ReviewController extends Controller
             $limit = $_GET["limit"];
         }
 
-        $products = $this->service->getAll($offset, $limit);
+        $reviews = $this->service->getAll($offset, $limit);
 
-        $this->respond($products);
+        $this->respond($reviews);
+    }
+
+    public function getReviewsForSelectedGame($gameid) {
+        $reviews = $this->service->getReviewsForSelectedGame($gameid);
+
+        $this->respond($reviews);
     }
 
     public function getOne($id)
