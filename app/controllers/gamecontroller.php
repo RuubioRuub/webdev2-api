@@ -30,27 +30,26 @@ class GameController extends Controller
 
     public function getSelectedGame($id)
     {
-        $category = $this->service->getSelectedGame($id);
+        $game = $this->service->getSelectedGame($id);
 
-        // we might need some kind of error checking that returns a 404 if the product is not found in the DB
-        if (!$category) {
-            $this->respondWithError(404, "Category not found");
+        if (!$game) {
+            $this->respondWithError(404, "game not found");
             return;
         }
 
-        $this->respond($category);
+        $this->respond($game);
     }
 
     public function create()
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->insert($category);
+            $game = $this->createObjectFromPostedJson("Models\\Game");
+            $this->service->insert($game);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($game);
     }
 
     public function update($id)
