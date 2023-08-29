@@ -84,7 +84,7 @@ class GameRepository extends Repository
     function delete($id)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM category WHERE id = :id");
+            $stmt = $this->connection->prepare("DELETE FROM game WHERE gameID = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;
