@@ -97,14 +97,14 @@ class ReviewRepository extends Repository
     }
 
 
-    function update($product, $id)
+    function update($review, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE product SET name = ?, price = ?, description = ?, image = ?, category_id = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE review SET body = ?, score = ?, title = ? WHERE reviewID = ?");
 
-            $stmt->execute([$product->name, $product->price, $product->description, $product->image, $product->category_id, $id]);
+            $stmt->execute([$review->body, $review->score, $review->title, $id]);
 
-            return $this->getOne($product->id);
+            return $this->getOne($review->reviewID);
         } catch (PDOException $e) {
             echo $e;
         }
