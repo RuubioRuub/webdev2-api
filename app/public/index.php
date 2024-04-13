@@ -1,4 +1,7 @@
 <?php
+
+use Controllers\UserController;
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Methods: *");
@@ -29,6 +32,7 @@ $router->delete('/games/(\d+)', 'GameController@delete');
 
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
+$router->get('/users', 'UserController@getAll');
 
 // Run it!
 $router->run();

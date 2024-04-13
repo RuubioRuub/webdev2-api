@@ -16,7 +16,8 @@ class UserController extends Controller
         $this->service = new UserService();
     }
 
-    public function login() {
+    public function login()
+    {
 
         // read user data from request body
         $postedUser = $this->createObjectFromPostedJson("Models\\User");
@@ -25,18 +26,19 @@ class UserController extends Controller
         $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
 
         // if the method returned false, the username and/or password were incorrect
-        if(!$user) {
+        if (!$user) {
             $this->respondWithError(401, "Invalid login");
             return;
         }
 
         // generate jwt
-        $tokenResponse = $this->generateJwt($user);       
+        $tokenResponse = $this->generateJwt($user);
 
-        $this->respond($tokenResponse);    
+        $this->respond($tokenResponse);
     }
 
-    public function generateJwt($user) {
+    public function generateJwt($user)
+    {
         $secret_key = "MY_SECRET_KEY";
 
         $issuer = "HS_FRONT"; // this can be the domain/servername that issues the token
@@ -60,11 +62,12 @@ class UserController extends Controller
                 "username" => $user->username,
                 "email" => $user->email,
                 "role" => $user->role
-        ));
+            )
+        );
 
         $jwt = JWT::encode($payload, $secret_key, 'HS256');
 
-        return 
+        return
             array(
                 "message" => "Successful login.",
                 "jwt" => $jwt,
@@ -72,5 +75,30 @@ class UserController extends Controller
                 "role" => $user->role,
                 "expireAt" => $expire
             );
-    }    
+    }
+
+    public function getAll()
+    {
+        try {
+            if (!$this->checkIfUserIsAdmin()) {
+                return;
+            }
+
+            $offset = NULL;
+            $limit = NULL;
+
+            if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
+                $offset = $_GET["offset"];
+            }
+            if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
+                $limit = $_GET["limit"];
+            }
+
+            $users = $this->service->getAll($offset, $limit);
+
+            $this->respond($users);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
+    }
 }

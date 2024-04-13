@@ -12,7 +12,7 @@ class GameService {
         $this->repository = new GameRepository();
     }
 
-    public function getAll($offset = NULL, $limit = NULL) {
+    public function getAll($offset, $limit) {
         return $this->repository->getAll($offset, $limit);
     }
 

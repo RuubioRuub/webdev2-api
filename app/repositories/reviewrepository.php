@@ -2,7 +2,6 @@
 
 namespace Repositories;
 
-use Models\Review;
 use PDO;
 use PDOException;
 use Repositories\Repository;
@@ -23,10 +22,8 @@ class ReviewRepository extends Repository
             }
             $stmt->execute();
 
-            $reviews = array();
-            while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-                $reviews[] = $this->rowToReview($row);
-            }
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Review');
+            $reviews = $stmt->fetchAll();
 
             return $reviews;
         } catch (PDOException $e) {
@@ -40,10 +37,9 @@ class ReviewRepository extends Repository
         $stmt->bindParam(':id', $gameid);
         $stmt->execute();
 
-        $reviews = array();
-        while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
-            $reviews[] = $this->rowToReview($row);
-        }
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Review');
+        $reviews = $stmt->fetchAll();
+        
 
         return $reviews;
     }
@@ -56,29 +52,13 @@ class ReviewRepository extends Repository
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $row = $stmt->fetch();
-            $review = $this->rowToReview($row);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Review');
+            $review = $stmt->fetch();
 
             return $review;
         } catch (PDOException $e) {
             echo $e;
         }
-    }
-
-    function rowToReview($row)
-    {
-        $review = new Review();
-        $review->reviewID = $row['reviewID'];
-        $review->gameID = $row['gameID'];
-        $review->title = $row['title'];
-        $review->score = $row['score'];
-        $review->body = $row['body'];
-        $review->criticreview = $row['criticreview'];
-        $review->writer = $row['writer'];
-        $review->company = $row['company'];
-
-        return $review;
     }
 
     function insert($review)

@@ -16,7 +16,17 @@ class GameController extends Controller
 
     public function getAll()
     {
-        $games = $this->service->getAll();
+        $offset = NULL;
+        $limit = NULL;
+
+        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
+            $offset = $_GET["offset"];
+        }
+        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
+            $limit = $_GET["limit"];
+        }
+
+        $games = $this->service->getAll($offset, $limit);
 
         $this->respond($games);
     }
@@ -42,11 +52,10 @@ class GameController extends Controller
 
             $game = $this->createObjectFromPostedJson("Models\\Game");
             $this->service->insert($game);
+            $this->respond($game);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
-        }
-
-        $this->respond($game);
+        }       
     }
 
     public function update($id)
