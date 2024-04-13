@@ -16,13 +16,6 @@ class GameController extends Controller
 
     public function getAll()
     {
-        // Checks for a valid jwt, returns 401 if none is found
-        // $token = $this->checkForJwt();
-        // if (!$token)
-        //     return;
-
-        
-
         $games = $this->service->getAll();
 
         $this->respond($games);
@@ -55,13 +48,13 @@ class GameController extends Controller
     public function update($id)
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->update($category, $id);
+            $game = $this->createObjectFromPostedJson("Models\\Game");
+            $this->service->update($game, $id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($game);
     }
 
     public function delete($id)
