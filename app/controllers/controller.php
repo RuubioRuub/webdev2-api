@@ -8,9 +8,10 @@ use \Firebase\JWT\Key;
 
 class Controller
 {
-    function checkForJwt() {
-         // Check for token header
-         if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    function checkForJwt()
+    {
+        // Check for token header
+        if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $this->respondWithError(401, "No token provided");
             return;
         }
@@ -22,7 +23,7 @@ class Controller
         $jwt = $arr[1];
 
         // Decode JWT
-        $secret_key = "YOUR_SECRET_KEY";
+        $secret_key = "MY_SECRET_KEY";
 
         if ($jwt) {
             try {
@@ -62,11 +63,22 @@ class Controller
 
         $object = new $className();
         foreach ($data as $key => $value) {
-            if(is_object($value)) {
+            if (is_object($value)) {
                 continue;
             }
             $object->{$key} = $value;
         }
         return $object;
+    }
+
+    function checkIfUserIsAdmin()
+    {
+        $jwt = $this->checkForJwt();
+        if (!$jwt || $jwt->data->role != 'admin') {
+            $this->respondWithError(401, "Only admins may access this resource");
+            return false;
+        }
+
+        return true;
     }
 }

@@ -37,10 +37,10 @@ class UserController extends Controller
     }
 
     public function generateJwt($user) {
-        $secret_key = "YOUR_SECRET_KEY";
+        $secret_key = "MY_SECRET_KEY";
 
-        $issuer = "THE_ISSUER"; // this can be the domain/servername that issues the token
-        $audience = "THE_AUDIENCE"; // this can be the domain/servername that checks the token
+        $issuer = "HS_FRONT"; // this can be the domain/servername that issues the token
+        $audience = "HS_BACK"; // this can be the domain/servername that checks the token
 
         $issuedAt = time(); // issued at
         $notbefore = $issuedAt; //not valid before 
@@ -49,7 +49,6 @@ class UserController extends Controller
         // JWT expiration times should be kept short (10-30 minutes)
         // A refresh token system should be implemented if we want clients to stay logged in for longer periods
 
-        // note how these claims are 3 characters long to keep the JWT as small as possible
         $payload = array(
             "iss" => $issuer,
             "aud" => $audience,

@@ -36,6 +36,10 @@ class GameController extends Controller
     public function create()
     {
         try {
+            if(!$this->checkIfUserIsAdmin()) {
+                return;
+            }
+
             $game = $this->createObjectFromPostedJson("Models\\Game");
             $this->service->insert($game);
         } catch (Exception $e) {
@@ -48,6 +52,10 @@ class GameController extends Controller
     public function update($id)
     {
         try {
+            if(!$this->checkIfUserIsAdmin()) {
+                return;
+            }
+
             $game = $this->createObjectFromPostedJson("Models\\Game");
             $this->service->update($game, $id);
         } catch (Exception $e) {
@@ -60,6 +68,10 @@ class GameController extends Controller
     public function delete($id)
     {
         try {
+            if(!$this->checkIfUserIsAdmin()) {
+                return;
+            }
+            
             $this->service->delete($id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
