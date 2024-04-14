@@ -68,14 +68,14 @@ class GameRepository extends Repository
     }
 
 
-    function update($category, $id)
+    function update($game, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE category SET name = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE game SET title = ?, publisher = ?, genre = ?, description = ?, image = ? WHERE gameID = ?");
 
-            $stmt->execute([$category->name, $id]);
+            $stmt->execute([$game->title, $game->publisher, $game->genre, $game->description, $game->image, $id]);
 
-            return $category;
+            return $game;
         } catch (PDOException $e) {
             echo $e;
         }
