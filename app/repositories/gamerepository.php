@@ -91,6 +91,5 @@ class GameRepository extends Repository
         } catch (PDOException $e) {
             echo $e;
         }
-        return true;
     }
 }

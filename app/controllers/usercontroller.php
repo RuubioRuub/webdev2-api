@@ -111,6 +111,18 @@ class UserController extends Controller
         }
     }
 
+    public function delete($id) {
+        try {
+            if (!$this->checkIfUserIsAdmin()) {
+                return;
+            }
+
+            $this->service->delete($id);
+        } catch(PDOException $e) {
+            $this->respondWithError(500, $e);
+        }
+    }
+
     public function getAll()
     {
         try {

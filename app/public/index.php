@@ -34,6 +34,7 @@ $router->delete('/games/(\d+)', 'GameController@delete');
 $router->post('/users/login', 'UserController@login');
 $router->get('/users', 'UserController@getAll');
 $router->post('/users/register', 'UserController@register');
+$router->delete('/users/(\d+)', 'UserController@delete');
 
 // Run it!
 $router->run();

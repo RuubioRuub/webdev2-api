@@ -35,7 +35,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function getAll($offset, $limit) {
+    public function getAll($offset, $limit)
+    {
         try {
             $query = "SELECT * FROM user ";
             if (isset($limit) && isset($offset)) {
@@ -57,7 +58,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function checkEmailAndUsername($email, $username) {
+    public function checkEmailAndUsername($email, $username)
+    {
         try {
             $stmt = $this->connection->prepare("SELECT * FROM user WHERE email = :email OR username = :username");
             $stmt->bindParam(':email', $email);
@@ -73,7 +75,8 @@ class UserRepository extends Repository
         }
     }
 
-    public function register($user) {
+    public function register($user)
+    {
         try {
             $stmt = $this->connection->prepare("INSERT into user (username, password, email, role) VALUES (:username, :password, :email, :role)");
             $stmt->bindParam(":username", $user->username);
@@ -87,7 +90,19 @@ class UserRepository extends Repository
             $user->password = "";
 
             return $user;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $stmt = $this->connection->prepare("DELETE FROM user WHERE id = :id");
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return;
+        } catch (PDOException $e) {
             echo $e;
         }
     }

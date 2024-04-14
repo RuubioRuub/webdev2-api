@@ -24,6 +24,10 @@ class UserService {
         return $this->repository->register($user);
     }
 
+    public function delete($id) {
+        $this->repository->delete($id);
+    }
+
     public function checkEmailAndUsername($email, $username) {
         return $this->repository->checkEmailAndUsername($email, $username);
     }
