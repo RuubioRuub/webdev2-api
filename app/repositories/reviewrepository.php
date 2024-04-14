@@ -102,4 +102,26 @@ class ReviewRepository extends Repository
         }
         return true;
     }
+
+    public function getScore($gameID, $criticreview)
+    {
+        try {
+        $stmt = $this->connection->prepare("SELECT AVG(score) FROM review WHERE criticreview = :critic AND gameID = :id");
+        if ($criticreview)
+            $stmt->bindValue(':critic', 1);
+        else
+            $stmt->bindValue(':critic', 0);
+        $stmt->bindvalue(':id', $gameID);
+        $stmt->execute();
+
+        $score = $stmt->fetchAll();
+
+        if (!$score || empty($score))
+            return -1;
+
+        return $score[0][0];    
+        } catch(PDOException $e) {
+            echo $e;
+        }
+    }
 }

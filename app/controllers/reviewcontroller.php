@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Exception;
+use PDOException;
 use Services\ReviewService;
 
 class ReviewController extends Controller
@@ -86,5 +87,21 @@ class ReviewController extends Controller
         }
 
         $this->respond(true);
+    }
+
+    public function getScore($gameID) {
+        try {
+            $averageScores = array();
+
+            $userscore = $this->service->getScore($gameID, false);
+            $criticscore = $this->service->getScore($gameID, true);
+            
+            array_push($averageScores, $userscore);
+            array_push($averageScores, $criticscore);
+
+            $this->respond($averageScores);
+        } catch(PDOException $e) {
+            $this->respondWithError(500, $e);
+        }
     }
 }

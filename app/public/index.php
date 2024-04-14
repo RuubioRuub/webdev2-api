@@ -22,6 +22,7 @@ $router->get('/reviews/(\d+)', 'ReviewController@getReviewsForSelectedGame');
 $router->post('/reviews', 'ReviewController@create');
 $router->put('/reviews/(\d+)', 'ReviewController@update');
 $router->delete('/reviews/(\d+)', 'ReviewController@delete');
+$router->get('/reviews/average/(\d+)', 'ReviewController@getScore');
 
 // routes for the games endpoint
 $router->get('/games', 'GameController@getAll');

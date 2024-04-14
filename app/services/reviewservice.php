@@ -35,6 +35,10 @@ class ReviewService {
     public function delete($item) {       
         return $this->repository->delete($item);        
     }
+
+    public function getScore($gameID, $criticreview) {
+        return $this->repository->getScore($gameID, $criticreview);
+    }
 }
 
 ?>
