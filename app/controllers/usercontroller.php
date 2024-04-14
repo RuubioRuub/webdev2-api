@@ -5,6 +5,7 @@ namespace Controllers;
 use Exception;
 use Services\UserService;
 use \Firebase\JWT\JWT;
+use PDOException;
 
 class UserController extends Controller
 {
@@ -18,23 +19,29 @@ class UserController extends Controller
 
     public function login()
     {
+        try {
 
-        // read user data from request body
-        $postedUser = $this->createObjectFromPostedJson("Models\\User");
 
-        // get user from db
-        $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
 
-        // if the method returned false, the username and/or password were incorrect
-        if (!$user) {
-            $this->respondWithError(401, "Invalid login");
-            return;
+            // read user data from request body
+            $postedUser = $this->createObjectFromPostedJson("Models\\User");
+
+            // get user from db
+            $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
+
+            // if the method returned false, the username and/or password were incorrect
+            if (!$user) {
+                $this->respondWithError(401, "Invalid login");
+                return;
+            }
+
+            // generate jwt
+            $tokenResponse = $this->generateJwt($user);
+
+            $this->respond($tokenResponse);
+        } catch (PDOException $e) {
+            $this->respondWithError(500, $e);
         }
-
-        // generate jwt
-        $tokenResponse = $this->generateJwt($user);
-
-        $this->respond($tokenResponse);
     }
 
     public function generateJwt($user)
@@ -75,6 +82,36 @@ class UserController extends Controller
                 "role" => $user->role,
                 "expireAt" => $expire
             );
+    }
+
+    public function register()
+    {
+        try {
+            $postedUser = $this->createObjectFromPostedJson("Models\\User");
+
+            $checkIfUserExists = $this->service->checkEmailAndUsername($postedUser->email, $postedUser->username);
+
+            if ($checkIfUserExists) {
+                $message = '';
+                if ($checkIfUserExists->username == $postedUser->username) {
+                    $message = 'That username is already taken';
+                } else {
+                    $message = 'A user with that email adress already exists';
+                }
+
+                $this->respondWithError(409, $message);
+                return;
+            }
+
+            $postedUser->password = password_hash($postedUser->password, PASSWORD_DEFAULT);
+
+            $newUser = $this->service->register($postedUser);
+            $newUser->password =
+
+                $this->respond($newUser);
+        } catch (PDOException $e) {
+            $this->respondWithError(500, $e);
+        }
     }
 
     public function getAll()

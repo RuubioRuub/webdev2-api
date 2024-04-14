@@ -2,6 +2,7 @@
 
 namespace Repositories;
 
+use Exception;
 use PDO;
 use PDOException;
 use Repositories\Repository;
@@ -52,6 +53,41 @@ class UserRepository extends Repository
 
             return $users;
         } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    public function checkEmailAndUsername($email, $username) {
+        try {
+            $stmt = $this->connection->prepare("SELECT * FROM user WHERE email = :email OR username = :username");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
+            $user = $stmt->fetch();
+
+            return $user;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    public function register($user) {
+        try {
+            $stmt = $this->connection->prepare("INSERT into user (username, password, email, role) VALUES (:username, :password, :email, :role)");
+            $stmt->bindParam(":username", $user->username);
+            $stmt->bindParam(":password", $user->password);
+            $stmt->bindParam(":email", $user->email);
+            $stmt->bindParam(":role", $user->role);
+
+            $stmt->execute();
+
+            $user->id = $this->connection->lastInsertId();
+            $user->password = "";
+
+            return $user;
+        } catch(PDOException $e) {
             echo $e;
         }
     }

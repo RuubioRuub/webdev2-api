@@ -19,6 +19,14 @@ class UserService {
     public function getAll($offset, $limit) {
         return $this->repository->getAll($offset, $limit);
     }
+
+    public function register($user) {
+        return $this->repository->register($user);
+    }
+
+    public function checkEmailAndUsername($email, $username) {
+        return $this->repository->checkEmailAndUsername($email, $username);
+    }
 }
 
 ?>
