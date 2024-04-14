@@ -20,17 +20,14 @@ class UserController extends Controller
     public function login()
     {
         try {
-
-
-
             // read user data from request body
             $postedUser = $this->createObjectFromPostedJson("Models\\User");
 
             // get user from db
             $user = $this->service->checkUsernamePassword($postedUser->username, $postedUser->password);
 
-            // if the method returned false, the username and/or password were incorrect
-            if (!$user) {
+            // if the method returned false or no user, the username and/or password were incorrect
+            if (!$user || !$user->username) {
                 $this->respondWithError(401, "Invalid login");
                 return;
             }
