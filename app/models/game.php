@@ -8,7 +8,6 @@ class Game {
     public string $genre;
     public string $description;
     public string $publisher;
-    public string $iamge;
   
 }
 

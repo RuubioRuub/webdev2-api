@@ -50,12 +50,11 @@ class GameRepository extends Repository
     function insert($game)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into game (title, publisher, genre, description, image) VALUES (:title, :publisher, :genre, :description, :image)");
+            $stmt = $this->connection->prepare("INSERT into game (title, publisher, genre, description) VALUES (:title, :publisher, :genre, :description)");
             $stmt->bindParam(":title", $game->title);
             $stmt->bindParam(":publisher", $game->publisher);
             $stmt->bindParam(":genre", $game->genre);
             $stmt->bindParam(":description", $game->description);
-            $stmt->bindParam(":image", $game->image);
 
             $stmt->execute();
 
@@ -71,9 +70,9 @@ class GameRepository extends Repository
     function update($game, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE game SET title = ?, publisher = ?, genre = ?, description = ?, image = ? WHERE gameID = ?");
+            $stmt = $this->connection->prepare("UPDATE game SET title = ?, publisher = ?, genre = ?, description = ? WHERE gameID = ?");
 
-            $stmt->execute([$game->title, $game->publisher, $game->genre, $game->description, $game->image, $id]);
+            $stmt->execute([$game->title, $game->publisher, $game->genre, $game->description, $id]);
 
             return $game;
         } catch (PDOException $e) {
