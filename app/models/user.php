@@ -8,7 +8,7 @@ class User {
     public string $password;
     public string $email;
     public string $role;
-
+    public string $company;
 }
 
 ?>

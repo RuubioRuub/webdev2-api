@@ -13,7 +13,7 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password, email, role FROM user WHERE username = :username");
+            $stmt = $this->connection->prepare("SELECT id, username, password, email, role, company FROM user WHERE username = :username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
@@ -78,11 +78,12 @@ class UserRepository extends Repository
     public function register($user)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into user (username, password, email, role) VALUES (:username, :password, :email, :role)");
+            $stmt = $this->connection->prepare("INSERT into user (username, password, email, role, company) VALUES (:username, :password, :email, :role, :company)");
             $stmt->bindParam(":username", $user->username);
             $stmt->bindParam(":password", $user->password);
             $stmt->bindParam(":email", $user->email);
             $stmt->bindParam(":role", $user->role);
+            $stmt->bindParam(":company", $user->company);
 
             $stmt->execute();
 

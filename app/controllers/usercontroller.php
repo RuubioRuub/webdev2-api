@@ -65,7 +65,8 @@ class UserController extends Controller
                 "id" => $user->id,
                 "username" => $user->username,
                 "email" => $user->email,
-                "role" => $user->role
+                "role" => $user->role,
+                "company" => $user->company
             )
         );
 
@@ -77,6 +78,7 @@ class UserController extends Controller
                 "jwt" => $jwt,
                 "username" => $user->username,
                 "role" => $user->role,
+                "company" => $user->company,
                 "expireAt" => $expire
             );
     }
