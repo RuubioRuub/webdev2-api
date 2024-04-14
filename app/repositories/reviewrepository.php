@@ -111,13 +111,14 @@ class ReviewRepository extends Repository
             $stmt->bindValue(':critic', 1);
         else
             $stmt->bindValue(':critic', 0);
+
         $stmt->bindvalue(':id', $gameID);
         $stmt->execute();
 
         $score = $stmt->fetchAll();
 
-        if (!$score || empty($score))
-            return -1;
+        if (!$score || empty($score) || $score == null)
+            return null;
 
         return $score[0][0];    
         } catch(PDOException $e) {
